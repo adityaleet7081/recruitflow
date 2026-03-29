@@ -1,0 +1,10 @@
+import axios from 'axios';
+
+const publicApi = axios.create({ baseURL: 'http://localhost:5000/api' });
+
+export const getPublicJobsAPI = (slug) => publicApi.get(`/public/${slug}/jobs`);
+export const getPublicJobAPI = (jobId) => publicApi.get(`/public/jobs/${jobId}`);
+export const applyJobAPI = (jobId, formData) =>
+    publicApi.post(`/public/jobs/${jobId}/apply`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
