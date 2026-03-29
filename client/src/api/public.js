@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const publicApi = axios.create({ baseURL: 'http://localhost:5000/api' });
+const publicApi = axios.create({ baseURL: import.meta.env.VITE_API_URL });
 
 export const getPublicJobsAPI = (slug) => publicApi.get(`/public/${slug}/jobs`);
 export const getPublicJobAPI = (jobId) => publicApi.get(`/public/jobs/${jobId}`);
