@@ -92,8 +92,3 @@ export const sendAssessmentEmail = async ({
     `,
     });
 };
-```
-
-Then add the API key to Render backend environment:
-```
-RESEND_API_KEY=re_FfaVhnr6_3k7mnKc7S3pjMLYC6G72nfmH
