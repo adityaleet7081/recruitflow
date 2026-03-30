@@ -1,19 +1,11 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ─── Application Confirmation to Candidate ───────────────────────────────────
 export const sendApplicationConfirmation = async ({ to, candidateName, jobTitle, companyName }) => {
-    await transporter.sendMail({
-        from: `"RecruitFlow" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+        from: 'RecruitFlow <onboarding@resend.dev>',
         to,
         subject: `Application Received — ${jobTitle} at ${companyName}`,
         html: `
@@ -33,8 +25,8 @@ export const sendApplicationConfirmation = async ({ to, candidateName, jobTitle,
 export const sendRecruiterScoreAlert = async ({ to, candidateName, jobTitle, score, summary }) => {
     const scoreColor = score >= 70 ? '#22c55e' : score >= 40 ? '#f59e0b' : '#ef4444';
 
-    await transporter.sendMail({
-        from: `"RecruitFlow" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+        from: 'RecruitFlow <onboarding@resend.dev>',
         to,
         subject: `New Application: ${candidateName} scored ${score}/100 for ${jobTitle}`,
         html: `
@@ -54,7 +46,7 @@ export const sendRecruiterScoreAlert = async ({ to, candidateName, jobTitle, sco
     });
 };
 
-// ─── Assessment Invitation to Candidate (new) ────────────────────────────────
+// ─── Assessment Invitation to Candidate ──────────────────────────────────────
 export const sendAssessmentEmail = async ({
     to,
     candidateName,
@@ -62,8 +54,8 @@ export const sendAssessmentEmail = async ({
     testLink,
     timeLimitMinutes,
 }) => {
-    await transporter.sendMail({
-        from: `"RecruitFlow" <${process.env.EMAIL_USER}>`,
+    await resend.emails.send({
+        from: 'RecruitFlow <onboarding@resend.dev>',
         to,
         subject: `Skills Assessment Invitation — ${jobTitle}`,
         html: `
@@ -100,3 +92,8 @@ export const sendAssessmentEmail = async ({
     `,
     });
 };
+```
+
+Then add the API key to Render backend environment:
+```
+RESEND_API_KEY=re_FfaVhnr6_3k7mnKc7S3pjMLYC6G72nfmH
